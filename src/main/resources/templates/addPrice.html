@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">\<head>
+    <title>Suuport Calculation Service </title>
+</head>
+<body>
+<div th:if="${message}">
+    <div th:text="${message}"></div>
+</div>
+<form th:action="@{/addprice}" method="post">
+    <div><label> Процент от стоимости лицензий : <input type="text" name="licpercent"/> </label></div>
+    <div><label> Процент от стоимости проектных работ : <input type="text" name="workpercent"/> </label></div>
+    <div><label> Ставка человеко-часа : <input type="text" name="hourcost"/> </label></div>
+    <div><input type="submit" value="Создать прайс"/></div>
+</form>
+</body>
+</html>
