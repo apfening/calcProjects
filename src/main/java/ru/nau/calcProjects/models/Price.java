@@ -2,10 +2,9 @@ package ru.nau.calcProjects.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
 
-import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -13,7 +12,7 @@ import java.util.Date;
 public class Price {
     @Id
     @GeneratedValue
-    private static Long id;
+    private Long id;
     private String title;
     private Date creationDate;
     private double licpercent;
@@ -24,8 +23,8 @@ public class Price {
         this.title = title;
         this.creationDate = new Date();
     }
-    public static Long getId() {
-        return Price.id;
+    public Long getId() {
+        return id;
     }
 
      public String getTitle() {

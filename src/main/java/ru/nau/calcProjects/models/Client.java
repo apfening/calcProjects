@@ -12,7 +12,7 @@ import java.util.Date;
 public class Client {
     @Id
     @GeneratedValue
-    private static Long id;
+    private Long id;
     private String title;
     private Date creationDate;
 
@@ -21,7 +21,7 @@ public class Client {
         this.creationDate = new Date();
     }
 
-    public static Long getId() {
+    public Long getId() {
         return id;
     }
 

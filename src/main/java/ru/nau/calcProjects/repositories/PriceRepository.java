@@ -6,5 +6,5 @@ import ru.nau.calcProjects.models.Price;
 
 @Repository
 public interface PriceRepository extends CrudRepository<Price, Long> {
-    Price findByLastCreationDate();
+//    Price findByLastCreationDate();
 }

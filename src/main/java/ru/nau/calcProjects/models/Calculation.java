@@ -1,9 +1,7 @@
 package ru.nau.calcProjects.models;
 
 import jakarta.persistence.*;
-import ru.nau.calcProjects.repositories.PriceRepository;
 
-import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -11,8 +9,14 @@ import java.util.Date;
 public class Calculation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private static Long id;
+    private Long id;
+
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User author;
+
+    @ManyToOne(targetEntity = Client.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
     private Date creationdate;
     private double liccost;
@@ -25,7 +29,7 @@ public class Calculation {
         this.creationdate = new Date();
     }
 
-    private static Long getId() {
+    private Long getId() {
         return id;
     }
 
