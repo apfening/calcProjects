@@ -1,0 +1,39 @@
+drop table if exists calculations cascade;
+drop table if exists clients cascade;
+drop table if exists prices cascade;
+drop table if exists service_users cascade;
+
+create table clients (
+    id bigserial not null,
+    creation_date timestamp(6),
+    title varchar(255),
+    primary key (id)
+);
+create table service_users (
+    id bigserial not null,
+    username varchar(255) unique,
+    password varchar(255),
+    email varchar(255),
+    role varchar(255) check (role in ('USER','ADMIN')),
+    primary key (id)
+);
+create table prices (
+    id bigserial not null,
+    title varchar(255),
+    creation_date timestamp(6),
+    licpercent float(53) not null,
+    workpercent float(53) not null,
+    hourcost float(53) not null,
+    primary key (id)
+);
+create table calculations (
+    id bigserial not null,
+    user_id bigint references service_users(id),
+    client_id bigint references clients(id),
+    creationdate timestamp(6),
+    liccost float(53) not null,
+    workcost float(53) not null,
+    hours integer not null,
+    result_calculation float(53) not null,
+    primary key (id)
+);
