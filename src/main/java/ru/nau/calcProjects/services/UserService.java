@@ -10,6 +10,7 @@ import ru.nau.calcProjects.models.User;
 import ru.nau.calcProjects.repositories.UserRepository;
 import ru.nau.calcProjects.security.CustomUserDetails;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,4 +37,11 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public List<User> findAllUser () {
+        return userRepository.findAll();
+    }
+
+    public void deleteById(long id) {
+        userRepository.deleteById(id);
+    }
 }

@@ -24,6 +24,11 @@ public class UserController {
         return "main";
     }
 
+    @GetMapping("/users")
+    public String users() {
+        return "users";
+    }
+
     @GetMapping("/registration")
     public String registrationPage() {
         return "registration";
@@ -33,5 +38,9 @@ public class UserController {
     public String registrationPage(User user) throws Exception {
         userService.addUser(user);
         return "redirect:/login";
+    }
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 }

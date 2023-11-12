@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Registration new user</title>
+    <title>Регистрация нового пользователя</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      margin: 0 auto;
+      width: 300px;
+      text-align: left;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      cursor: pointer;
+    }
+    a {
+      background-color: red;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    a:hover {
+      background-color: #c41e3a;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-<h3>Registration new user</h3>
+<h1>Регистрация нового пользователя</h1>
 <br/>
 <form th:method="POST" th:action="@{/registration}" th:object="${user}">
+    <input type="text" name="username" placeholder="Имя пользователя" required><br>
+    <input type="password" name="password" placeholder="Пароль" required><br>
+    <input type="text" name="email" placeholder="email" required><br>
     <div class="row">
-        <label for="username">Введите имя пользователя:</label>
-        <input id="username" name="username" type="text"/>
-    </div>
-    <div class="row">
-        <label for="password">Введите пароль пользователя:</label>
-        <input id="password" name="password" type="text"/>
-    </div>
-    <div class="row">
-        <label for="email">Введите email пользователя:</label>
-        <input id="email" name="email" type="text"/>
-    </div>
-    <div class="row">
-        <button type="submit">Save</button>
-        <a href="main.html" th:href="@{/}"><button type="button">Cancel</button></a>
+        <input type="submit" value="Зарегистрироваться">
+        <a type="text" href="main.html" th:href="@{/}">Отмена</a>
     </div>
 </form>
 </body>
