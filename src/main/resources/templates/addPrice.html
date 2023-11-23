@@ -1,17 +1,77 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">\<head>
-    <title>Suuport Calculation Service </title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add price</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 200px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function savePrice() {
+            const savedPriceContainer = document.getElementById("saved-price")
+            const titleInput = document.getElementById("price-title-input")
+            const licpercentInput = document.getElementById("price-licpercent-input")
+            const workpercentInput = document.getElementById("price-workpercent-input")
+            const hourcostInput = document.getElementById("price-hourcost-input")
+            let  price = {
+                title: titleInput.value,
+                licpercent: licpercentInput.value,
+                workpercent: workpercentInput.value,
+                hourcost: hourcostInput.value
+            }
+            fetch("/api/price", {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(price)})
+            .then(rawResponse => rawResponse.json())
+            .then(json => savedPriceContainer.innerHTML = JSON.stringify(json, null, 4))
+        }
+    </script>
 </head>
 <body>
-<div th:if="${message}">
-    <div th:text="${message}"></div>
+
+<h3>Создать новый прайс:</h3>
+<div class="row">
+    <label for="price-title-input">Название прайса:</label>
+    <input id="price-title-input" name="title" type="text"/>
 </div>
-<form th:action="@{/addprice}" method="post">
-    <div><label> Процент от стоимости лицензий : <input type="text" name="licpercent"/> </label></div>
-    <div><label> Процент от стоимости проектных работ : <input type="text" name="workpercent"/> </label></div>
-    <div><label> Ставка человеко-часа : <input type="text" name="hourcost"/> </label></div>
-    <div><input type="submit" value="Создать прайс"/></div>
-</form>
+<div class="row">
+    <label for="price-licpercent-input">Процент от стоимости лицензий (%):</label>
+    <input id="price-licpercent-input" name="licpercent" type="text"/>
+</div>
+<div class="row">
+    <label for="price-licpercent-input">Процент от стоимости проектных работ (%):</label>
+    <input id="price-workpercent-input" name="workpercent" type="text"/>
+</div>
+<div class="row">
+    <label for="price-hourcost-input">Ставка человеко-часа (руб.):</label>
+    <input id="price-hourcost-input" name="workpercent" type="text"/>
+</div>
+
+<div class="row">
+    <button type="button" onclick="savePrice()">Создать прайс</button>
+    <a href="list.html" th:href="@{/price}"><button type="button">Назад</button></a>
+</div>
+<h3>Сохранённый прайс:</h3>
+<pre id = "saved-price"></pre>
+
 </body>
 </html>

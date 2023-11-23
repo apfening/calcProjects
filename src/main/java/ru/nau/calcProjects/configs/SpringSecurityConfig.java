@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -18,15 +20,14 @@ public class SpringSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/registration", "/").permitAll()
+                        .requestMatchers("/registration").permitAll()
                         .requestMatchers("/add/**", "/delete/**", "/users").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
-                        .defaultSuccessUrl("/users", true)
-                        .permitAll()
-                );
+                        .permitAll());
+//                .formLogin(withDefaults());
         return http.build();
     }
 
@@ -35,18 +36,4 @@ public class SpringSecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-//    @Bean
-//    public UserDetailsService getUsers() {
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("12345")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("12345")
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
 }

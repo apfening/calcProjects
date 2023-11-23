@@ -19,11 +19,12 @@ create table service_users (
 );
 create table prices (
     id bigserial not null,
-    title varchar(255),
+    title varchar(255) not null,
     creation_date timestamp(6),
     licpercent float(53) not null,
     workpercent float(53) not null,
     hourcost float(53) not null,
+    status boolean not null,
     primary key (id)
 );
 create table calculations (

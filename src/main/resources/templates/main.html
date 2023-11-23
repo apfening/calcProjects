@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Main page</title>
     <style>
@@ -20,7 +20,8 @@
 </head>
 <body>
 <h1>Добро пожаловать в приложение CalcProjectApplication</h1>
-<h2>Здесь вы можете произвести расчёт чего-то там</h2>
-<p>Для начала работы пожалуйста, <a href="/login">авторизуйтесь</a> или <a href="/registration">зарегистрируйтесь</a>.</p>
+<h2>Здесь вы можете произвести расчёт стоимости товара</h2>
+<p><a href="/price.html" th:href="@{/price}">Список прайсов</a></p>
+<p><a href="/users.html" th:href="@{/users}">Список пользователей</a></p>
 </body>
 </html>
