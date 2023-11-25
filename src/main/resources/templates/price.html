@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <title>List of all prices</title>
+  <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .prices {
+            border: 1px solid steelblue;
+            width: 1200px;
+            border-collapse: collapse;
+        }
+
+        .prices tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .prices td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+  <script>
+    // Fetch data from server
+    fetch('/api/price')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector('tbody');
+            data.forEach(price => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${price.id}</td>
+                    <td>${price.title}</td>
+                    <td>${price.creationDate}</td>
+                    <td>${price.licpercent}</td>
+                    <td>${price.workpercent}</td>
+                    <td>${price.hourcost}</td>
+                    <td>${price.status}</td>
+                    <td><a href="#" onclick="deleteRow(${price.id})">Удалить</a></td>
+                    `
+                ;
+                tableBody.appendChild(row);
+            });
+        });
+    // Delete row function
+    function deleteRow(id) {
+        fetch(`/api/price/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    var table = document.querySelector('tbody');
+                    var rows = table.getElementsByTagName("tr");
+                    for (var i = 0; i < rows.length; i++) {
+                        var cells = rows[i].getElementsByTagName("td");
+                        if (cells[0].innerHTML == id) {
+                          var rowIndex = rows[i].rowIndex;
+                          break;
+                      }
+                    }
+                    console.log("Num is: " + rowIndex);
+                    table.deleteRow(rowIndex - 1);
+                    window.location.reload();
+                } else {
+                    throw new Error('Failed to delete row');
+                }
+            })
+            .catch(error => console.error(error));
+    }
+    </script>
+</head>
+<body>
+<h1>Список прайсов:</h1>
+
+<table class="prices">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Название прайса</th>
+    <th>Дата создания</th>
+    <th>Процент от стоимости лицензий (%)</th>
+    <th>Процент от стоимости проектных работ (%)</th>
+    <th>Ставка человеко-часа (руб.)</th>
+    <th>Актуальность прайса</th>
+    <th>Удалить</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br>
+<div class="row">
+  <a href="addPrice.html" th:href = "@{/addPrice}"><button type="button">Добавить новый прайс</button></a>
+  <a href="main.html" th:href="@{/}"><button type="button">На главную</button></a>
+</div>
+
+</body>
+</html>

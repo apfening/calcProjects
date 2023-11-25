@@ -1,39 +1,33 @@
 package ru.nau.calcProjects.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Calendar;
 import java.util.Date;
 @Entity
+@Getter
+@Setter
 @Table(name = "clients")
 public class Client {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
+    private String comment;
+
     private Date creationDate;
+
+    public Client() {
+        this.creationDate = new Date();
+    }
 
     public Client(String title){
         this.title = title;
         this.creationDate = new Date();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getCreationDate(Client client) {
-        return creationDate;
     }
 }

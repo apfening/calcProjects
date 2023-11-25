@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <title>List of all clients</title>
+  <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .clients {
+            border: 1px solid steelblue;
+            width: 800px;
+            border-collapse: collapse;
+        }
+
+        .clients tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .clients td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+  <script>
+    // Fetch data from server
+    fetch('/api/client')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector('tbody');
+            data.forEach(client => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${client.id}</td>
+                    <td>${client.title}</td>
+                    <td>${client.comment}</td>
+                    <td>${client.creationDate}</td>
+                    <td><a href="/client/${client.id}">Изменить</a></td>
+                    <td><a href="#" onclick="deleteRow(${client.id})">Удалить</a></td>
+                    `
+                ;
+                tableBody.appendChild(row);
+            });
+        });
+    // Delete row function
+    function deleteRow(id) {
+        fetch(`/api/client/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    var table = document.querySelector('tbody');
+                    var rows = table.getElementsByTagName("tr");
+                    for (var i = 0; i < rows.length; i++) {
+                        var cells = rows[i].getElementsByTagName("td");
+                        if (cells[0].innerHTML == id) {
+                          var rowIndex = rows[i].rowIndex;
+                          break;
+                      }
+                    }
+                    console.log("Num is: " + rowIndex);
+                    table.deleteRow(rowIndex - 1);
+                } else {
+                    throw new Error('Failed to delete row');
+                }
+            })
+            .catch(error => console.error(error));
+    }
+    </script>
+</head>
+<body>
+<h1>Список клиентов:</h1>
+
+<table class="clients">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Название клиента</th>
+    <th>Примечание</th>
+    <th>Дата создания</th>
+    <th>Изменить</th>
+    <th>Удалить</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br>
+<div class="row">
+  <a href = "addClient.html" th:href = "@{/addClient}"><button type="button">Добавить нового клиента</button></a>
+  <a href="main.html" th:href="@{/}"><button type="button">На главную</button></a>
+</div>
+
+</body>
+</html>

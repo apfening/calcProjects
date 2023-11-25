@@ -1,32 +1,19 @@
 package ru.nau.calcProjects.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import ru.nau.calcProjects.exception.PriceNotFoundException;
 import ru.nau.calcProjects.models.Price;
-import ru.nau.calcProjects.repositories.PriceRepository;
 
-@Component
-@Service
-public class PriceService {
-    protected final PriceRepository priceRepository;
+import java.util.List;
 
-    @Autowired
-    public PriceService(PriceRepository priceRepository) {
-        this.priceRepository = priceRepository;
-    }
+public interface PriceService {
 
-    void savePrice(String title, double licePercent, double workPersent, double hourCost) {
-        try {
-            Price price = new Price(title);
-            price.setLicpercent(licePercent);
-            price.setWorkpercent(workPersent);
-            price.setHourcost(hourCost);
-            priceRepository.save(price);
-        } catch (Exception e) {
-            if (title.isEmpty()) {
-                throw new RuntimeException("Название прайса не может быть пустым. Необходимо заполнить.");
-            }
-        }
-    }
+    Price createPrice(Price price);
+
+    List<Price> findAll();
+
+    Price findById(Long id) throws PriceNotFoundException;
+
+    Price editPrice(Price price, Long id) throws PriceNotFoundException;
+
+    void deleteById(Long id) throws PriceNotFoundException;
 }
