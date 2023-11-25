@@ -2,45 +2,43 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8"/>
-  <title>List of all prices</title>
+  <title>List of all clients</title>
   <style type="text/css">
         body {
             padding: 50px;
         }
 
-        .prices {
+        .clients {
             border: 1px solid steelblue;
-            width: 1200px;
+            width: 800px;
             border-collapse: collapse;
         }
 
-        .prices tr td, th {
+        .clients tr td, th {
             padding: 5px;
             border: 1px solid steelblue;
         }
 
-        .prices td:last-child, td:first-child {
+        .clients td:last-child, td:first-child {
             width: 50px;
         }
     </style>
 
   <script>
     // Fetch data from server
-    fetch('/api/price')
+    fetch('/api/client')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector('tbody');
-            data.forEach(price => {
+            data.forEach(client => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${price.id}</td>
-                    <td>${price.title}</td>
-                    <td>${price.creationDate}</td>
-                    <td>${price.licpercent}</td>
-                    <td>${price.workpercent}</td>
-                    <td>${price.hourcost}</td>
-                    <td>${price.status}</td>
-                    <td><a href="#" onclick="deleteRow(${price.id})">Удалить</a></td>
+                    <td>${client.id}</td>
+                    <td>${client.title}</td>
+                    <td>${client.comment}</td>
+                    <td>${client.creationDate}</td>
+                    <td><a href="/client/${client.id}">Изменить</a></td>
+                    <td><a href="#" onclick="deleteRow(${client.id})">Удалить</a></td>
                     `
                 ;
                 tableBody.appendChild(row);
@@ -48,7 +46,7 @@
         });
     // Delete row function
     function deleteRow(id) {
-        fetch(`/api/price/${id}`, { method: 'DELETE' })
+        fetch(`/api/client/${id}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     var table = document.querySelector('tbody');
@@ -62,7 +60,6 @@
                     }
                     console.log("Num is: " + rowIndex);
                     table.deleteRow(rowIndex - 1);
-                    window.location.reload();
                 } else {
                     throw new Error('Failed to delete row');
                 }
@@ -72,18 +69,16 @@
     </script>
 </head>
 <body>
-<h1>Список прайсов:</h1>
+<h1>Список клиентов:</h1>
 
-<table class="prices">
+<table class="clients">
   <thead>
   <tr>
     <th>ID</th>
-    <th>Название прайса</th>
+    <th>Название клиента</th>
+    <th>Примечание</th>
     <th>Дата создания</th>
-    <th>Процент от стоимости лицензий (%)</th>
-    <th>Процент от стоимости проектных работ (%)</th>
-    <th>Ставка человеко-часа (руб.)</th>
-    <th>Актуальность прайса</th>
+    <th>Изменить</th>
     <th>Удалить</th>
   </tr>
   </thead>
@@ -92,7 +87,7 @@
 </table>
 <br>
 <div class="row">
-  <a href="addPrice.html" th:href = "@{/addPrice}"><button type="button">Добавить новый прайс</button></a>
+  <a href = "addClient.html" th:href = "@{/addClient}"><button type="button">Добавить нового клиента</button></a>
   <a href="main.html" th:href="@{/}"><button type="button">На главную</button></a>
 </div>
 

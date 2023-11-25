@@ -22,9 +22,14 @@ public class PageController {
         return "main";
     }
 
-    @GetMapping("/users")
-    public String users() {
-        return "users";
+    @GetMapping("/user")
+    public String user() {
+        return "user";
+    }
+
+    @GetMapping("/addUser")
+    public String addUserPage() {
+        return "addUser";
     }
 
     @GetMapping("/registration")
@@ -50,5 +55,15 @@ public class PageController {
     @GetMapping("/addPrice")
     public String addPricePage() {
         return "addPrice";
+    }
+
+    @GetMapping("/client")
+    public String clientPage() {
+        return "client";
+    }
+
+    @GetMapping("/addClient")
+    public String addClientPage() {
+        return "addClient";
     }
 }

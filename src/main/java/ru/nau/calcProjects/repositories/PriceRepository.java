@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Long> {
-//    Price findByLastCreationDate();
-
+    Price findFirstByOrderByCreationDateDesc();
     Optional<Price> findByStatus(boolean status);
 }

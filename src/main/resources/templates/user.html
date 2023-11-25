@@ -2,24 +2,24 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>List of all books</title>
+    <title>List of all users</title>
     <style type="text/css">
         body {
             padding: 50px;
         }
 
-        .books {
+        .users {
             border: 1px solid steelblue;
             width: 700px;
             border-collapse: collapse;
         }
 
-        .books tr td, th {
+        .users tr td, th {
             padding: 5px;
             border: 1px solid steelblue;
         }
 
-        .books td:last-child, td:first-child {
+        .users td:last-child, td:first-child {
             width: 50px;
         }
     </style>
@@ -36,9 +36,9 @@
                     <td>${user.id}</td>
                     <td>${user.username}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
-                    <td><a href="/user/${user.id}">Edit</a></td>
-                    <td><a href="#" onclick="deleteRow(${user.id})">Delete</a></td>
+                    <td>${user.role}</td>
+                    <td><a href="/user/${user.id}">Изменить</a></td>
+                    <td><a href="#" onclick="deleteRow(${user.id})">Удалить</a></td>
                     `
                 ;
                 tableBody.appendChild(row);
@@ -69,29 +69,27 @@
     </script>
 </head>
 <body>
-<h1>Users:</h1>
+<h1>Пользователи:</h1>
 
-<table class="books">
+<table class="users">
     <thead>
     <tr>
         <th>ID</th>
-        <th>username</th>
-        <th>email</th>
-        <th>password</th>
-        <th>Edit user</th>
-        <th>Delete user</th>
+        <th>Логин</th>
+        <th>Email</th>
+        <th>Роль</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
 <br>
-<h4>
-    <a href="main.html" th:href="@{/}">На главную</a>
-</h4>
-<!--<div class="row">-->
-<!--    <a href = "add.html" th:href = "@{/add}"><button type="button">Add new user</button></a>-->
-<!--</div>-->
+<div class="row">
+    <a href="addPrice.html" th:href = "@{/addUser}"><button type="button">Добавить нового пользователя</button></a>
+    <a href="main.html" th:href="@{/}"><button type="button">На главную</button></a>
+</div>
 
 </body>
 </html>

@@ -6,7 +6,8 @@ drop table if exists service_users cascade;
 create table clients (
     id bigserial not null,
     creation_date timestamp(6),
-    title varchar(255),
+    title varchar(255) unique,
+    comment varchar(255),
     primary key (id)
 );
 create table service_users (

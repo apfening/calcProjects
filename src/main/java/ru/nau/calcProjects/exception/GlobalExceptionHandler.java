@@ -9,10 +9,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PriceNotFoundException.class)
-    public ResponseEntity<String> handleBookNotFoundException(PriceNotFoundException ex) {
+    public ResponseEntity<String> handlePriceNotFoundException(PriceNotFoundException ex) {
         String body = "{\"state\":\"fail\"," +
                 "\"message\":\"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler({ClientExistException.class, UserExistException.class})
+    public ResponseEntity<String> handleClientExistException(Exception ex) {
+        String body = "{\"state\":\"fail\"," +
+                "\"message\":\"" + ex.getMessage() + "\"}";
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
     @ExceptionHandler(RuntimeException.class)

@@ -8,11 +8,12 @@ import java.util.List;
 public interface PriceService {
 
     Price createPrice(Price price);
-    Price editPrice(Price price, Long id);
 
     List<Price> findAll();
 
     Price getById(Long id) throws PriceNotFoundException;
 
-    void deleteById(Long id);
+    Price editPrice(Price price, Long id) throws PriceNotFoundException;
+
+    void deleteById(Long id) throws PriceNotFoundException;
 }

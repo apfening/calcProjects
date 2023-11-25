@@ -1,6 +1,7 @@
 package ru.nau.calcProjects.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,11 +17,17 @@ public class Price {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
     private Date creationDate;
+
     private Double licpercent;
+
     private Double workpercent;
+
     private Double hourcost;
+
     private boolean status = false;
 
     public Price() {

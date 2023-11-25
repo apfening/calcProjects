@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.nau.calcProjects.exception.UserExistException;
 import ru.nau.calcProjects.models.Role;
 import ru.nau.calcProjects.models.User;
 import ru.nau.calcProjects.repositories.UserRepository;
@@ -23,18 +24,19 @@ public class UserService implements UserDetailsService {
         this. userRepository = userRepository;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User serviceUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new CustomUserDetails(serviceUser);
     }
 
-    public void addUser(User user) throws Exception {
+    public User addUser(User user) throws UserExistException {
         Optional<User> userFormDb = userRepository.findByUsername(user.getUsername());
         if (userFormDb.isPresent())
-            throw new Exception("User exist!");
+            throw new UserExistException ("Пользователь с таким логином уже существует!");
         user.setRole(Role.USER);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public List<User> findAllUser () {
