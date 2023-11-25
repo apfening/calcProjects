@@ -1,8 +1,23 @@
 insert into service_users(username, password, email, role)
-    values ('admin', '12345', 'admin@email.ru', 'ADMIN');
+    values ('admin', 'admin', 'admin@email.ru', 'ADMIN');
 
-insert into prices (title,licpercent,workpercent,hourcost,status,creation_date)
-    values ('Тестовый прайс',50,100,500,'true','2023-11-23 21:28:12');
+insert into prices (title, licpercent, workpercent, hourcost, status, creation_date)
+    values ('Тестовый прайс', 50, 100, 500, 'true', '2023-11-23 21:28:12');
 
-insert into clients (comment,creation_date,title)
-    values ('Тестовый юрик','2023-11-23 21:28:12','АО "Ромашка"');
+insert into clients (title, comment, creation_date)
+    values ('АО "Ромашка"','Тестовый юрик','2023-11-23 21:28:12');
+insert into clients (title, comment, creation_date)
+    values ('Иванов Иван','Тестовый физикик','2023-11-23 21:28:12');
+
+insert into calculations
+        (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
+    values
+        (1, 1, 1,'2023-11-23 21:28:12', 10, 20, 10, 5025);
+insert into calculations
+        (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
+    values
+        (1, 2, 1,'2023-11-23 21:28:12', 30, 20, 5, 2535);
+insert into calculations
+        (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
+    values
+        (1, 1, 1,'2023-11-23 21:28:12', 10, 20, 15, 7535);

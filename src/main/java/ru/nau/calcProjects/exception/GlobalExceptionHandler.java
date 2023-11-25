@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,6 +26,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ValidateException.class)
     public ResponseEntity<String> handleRuntimeException(ValidateException ex) {
+        String body = "{\"state\":\"fail\"," +
+                "\"message\":\"" + ex.getMessage() + "\"}";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<String> handleRuntimeException(SQLException ex) {
         String body = "{\"state\":\"fail\"," +
                 "\"message\":\"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nau.calcProjects.dto.CalculationDto;
 import ru.nau.calcProjects.exception.CalculationNotFoundException;
+import ru.nau.calcProjects.exception.PriceNotFoundException;
 import ru.nau.calcProjects.exception.ValidateException;
 import ru.nau.calcProjects.models.Calculation;
 import ru.nau.calcProjects.services.CalculationService;
@@ -21,7 +22,7 @@ public class CalculationRestController {
         this.calculationService = calculationService;
     }
 
-    @GetMapping("/api/calculation")
+    @GetMapping("/api/admin/calculation")
     public List<CalculationDto> getAllCalculations() {
         return calculationService.findAll()
                 .stream()
@@ -29,8 +30,17 @@ public class CalculationRestController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/api/calculation")
+    public List<CalculationDto> findAllByClientId(@RequestParam(value = "client", required = false) Long clientId) {
+        System.out.println(clientId);
+        return calculationService.findAllByClientId(clientId)
+                .stream()
+                .map(CalculationDto::new)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping ("/api/calculation/{id}")
-    public CalculationDto getCalculation(@PathVariable long id) throws CalculationNotFoundException {
+    public CalculationDto getCalculation(@PathVariable Long id) throws CalculationNotFoundException {
         return new CalculationDto(calculationService.findById(id));
     }
 
@@ -47,5 +57,11 @@ public class CalculationRestController {
         }
         Calculation savedCalculation = calculationService.createCalculation(calculation);
         return new CalculationDto(savedCalculation);
+    }
+
+    @DeleteMapping("/api/calculation/{id}")
+    public String deleteBook(@PathVariable("id") long id) throws CalculationNotFoundException {
+        calculationService.deleteById(id);
+        return "{\"state\":\"success\"}";
     }
 }

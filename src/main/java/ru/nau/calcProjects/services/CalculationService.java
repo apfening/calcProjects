@@ -11,9 +11,7 @@ public interface CalculationService {
 
     List<Calculation> findAll();
 
-//    List<Calculation> findAllByClientId();
-//
-//    List<Calculation> findAllByAuthorId();
+    List<Calculation> findAllByClientId(Long clientId);
 
     Calculation findById(Long id) throws CalculationNotFoundException;
 
