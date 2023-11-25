@@ -66,4 +66,14 @@ public class PageController {
     public String addClientPage() {
         return "addClient";
     }
+
+    @GetMapping("/calculation")
+    public String calculationPage() {
+        return "calculation";
+    }
+
+    @GetMapping("/addCalculation")
+    public String addCalculationPage() {
+        return "addCalculation";
+    }
 }

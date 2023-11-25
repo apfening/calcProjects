@@ -11,7 +11,7 @@ public interface PriceService {
 
     List<Price> findAll();
 
-    Price getById(Long id) throws PriceNotFoundException;
+    Price findById(Long id) throws PriceNotFoundException;
 
     Price editPrice(Price price, Long id) throws PriceNotFoundException;
 

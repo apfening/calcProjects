@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Long> {
     Price findFirstByOrderByCreationDateDesc();
-    Optional<Price> findByStatus(boolean status);
+    Price findByStatus(boolean status);
 }

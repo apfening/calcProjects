@@ -22,9 +22,8 @@ public class PriceServiceImpl implements PriceService {
 
     @Transactional
     private Price setNewActualPrice(Price price) {
-        Optional<Price> actualPriceOptional = priceRepository.findByStatus(true);
-        if (actualPriceOptional.isPresent()) {
-            Price actualPrice = actualPriceOptional.get();
+        Price actualPrice = priceRepository.findByStatus(true);
+        if (actualPrice != null) {
             actualPrice.setStatus(false);
             priceRepository.save(actualPrice);
         }
@@ -43,7 +42,7 @@ public class PriceServiceImpl implements PriceService {
 
     @Transactional(readOnly = true)
     @Override
-    public Price getById(Long id) throws PriceNotFoundException {
+    public Price findById(Long id) throws PriceNotFoundException {
         return priceRepository.findById(id)
                 .orElseThrow(() -> new PriceNotFoundException("Прайс под номером " + id + " не найден"));
     }
@@ -51,7 +50,7 @@ public class PriceServiceImpl implements PriceService {
     @Transactional
     @Override
     public void deleteById(Long id) throws PriceNotFoundException {
-        Price deletePrice = getById(id);
+        Price deletePrice = findById(id);
         priceRepository.deleteById(id);
         if (deletePrice.isStatus()) {
             Price actualPrice = priceRepository.findFirstByOrderByCreationDateDesc();
@@ -69,7 +68,7 @@ public class PriceServiceImpl implements PriceService {
     @Transactional
     @Override
     public Price editPrice(Price price, Long id) throws PriceNotFoundException {
-        Price editPrice = getById(id);
+        Price editPrice = findById(id);
         editPrice.setTitle(price.getTitle());
         editPrice.setLicpercent(price.getLicpercent());
         editPrice.setWorkpercent(price.getWorkpercent());
@@ -78,8 +77,8 @@ public class PriceServiceImpl implements PriceService {
         if (editPrice.isStatus()) {
             setNewActualPrice(editPrice);
         } else {
-            Optional<Price> actualPrice = priceRepository.findByStatus(true);
-            if (id.equals(actualPrice.get().getId())) {
+            Price actualPrice = priceRepository.findByStatus(true);
+            if (id.equals(actualPrice.getId())) {
                 throw new RuntimeException("Невозможно сменить статус данного прайса: должен быть хотя бы один актуальный прайс");
             }
         }

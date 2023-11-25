@@ -12,7 +12,7 @@ public interface ClientService {
 
     List<Client> findAll();
 
-    Client getById(Long id) throws ClientNotFoundException;
+    Client findById(Long id) throws ClientNotFoundException;
 
     Client editClient(Client client, Long id) throws ClientNotFoundException;
 

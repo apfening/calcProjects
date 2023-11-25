@@ -55,20 +55,20 @@
 </div>
 <div class="row">
     <label for="price-licpercent-input">Процент от стоимости лицензий (%):</label>
-    <input id="price-licpercent-input" name="licpercent" type="text"/>
+    <input id="price-licpercent-input" name="licpercent" type="number" min="0"/>
 </div>
 <div class="row">
-    <label for="price-licpercent-input">Процент от стоимости проектных работ (%):</label>
-    <input id="price-workpercent-input" name="workpercent" type="text"/>
+    <label for="price-workpercent-input">Процент от стоимости проектных работ (%):</label>
+    <input id="price-workpercent-input" name="workpercent" type="number" min="0"/>
 </div>
 <div class="row">
     <label for="price-hourcost-input">Ставка человеко-часа (руб.):</label>
-    <input id="price-hourcost-input" name="workpercent" type="text"/>
+    <input id="price-hourcost-input" name="workpercent" type="number" min="0"/>
 </div>
 
 <div class="row">
     <button type="button" onclick="savePrice()">Создать прайс</button>
-    <a href="list.html" th:href="@{/price}"><button type="button">Назад</button></a>
+    <a href="main.html" th:href="@{/price}"><button type="button">Назад</button></a>
 </div>
 <h3>Сохранённый прайс:</h3>
 <pre id = "saved-price"></pre>

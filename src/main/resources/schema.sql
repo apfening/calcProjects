@@ -32,9 +32,10 @@ create table calculations (
     id bigserial not null,
     user_id bigint references service_users(id),
     client_id bigint references clients(id),
-    creationdate timestamp(6),
-    liccost float(53) not null,
-    workcost float(53) not null,
+    price_id bigint references prices(id),
+    creation_date timestamp(6),
+    lic_cost float(53) not null,
+    work_cost float(53) not null,
     hours integer not null,
     result_calculation float(53) not null,
     primary key (id)

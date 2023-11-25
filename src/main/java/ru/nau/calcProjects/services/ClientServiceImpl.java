@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Transactional(readOnly = true)
     @Override
-    public Client getById(Long id) throws ClientNotFoundException {
+    public Client findById(Long id) throws ClientNotFoundException {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException("Клиент под номером " + id + " не найден"));
     }
@@ -48,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public Client editClient(Client client, Long id) throws ClientNotFoundException {
-        Client editClient = getById(id);
+        Client editClient = findById(id);
         editClient.setTitle(client.getTitle());
         return clientRepository.save(editClient);
     }

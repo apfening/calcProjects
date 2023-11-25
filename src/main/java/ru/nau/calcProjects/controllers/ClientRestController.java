@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nau.calcProjects.exception.ClientExistException;
 import ru.nau.calcProjects.exception.ClientNotFoundException;
-import ru.nau.calcProjects.exception.PriceNotFoundException;
+import ru.nau.calcProjects.exception.ValidateException;
 import ru.nau.calcProjects.models.Client;
-import ru.nau.calcProjects.models.Price;
 import ru.nau.calcProjects.services.ClientService;
 
 import java.util.List;
@@ -22,27 +21,27 @@ public class ClientRestController {
     }
 
     @GetMapping("/api/client")
-    public List<Client> getAllPrices() {
+    public List<Client> getAllClients() {
         return clientService.findAll();
     }
 
     @GetMapping ("/api/client/{id}")
-    public Client getPrice(@PathVariable long id) throws ClientNotFoundException {
-        return clientService.getById(id);
+    public Client getClient(@PathVariable long id) throws ClientNotFoundException {
+        return clientService.findById(id);
     }
 
     @PostMapping("/api/client")
-    public Client createPrice(@RequestBody Client client) throws ClientExistException {
+    public Client createClient(@RequestBody Client client) throws ClientExistException, ValidateException {
         if (client.getTitle().isEmpty()) {
-            throw new RuntimeException("Название клиента не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название клиента не может быть пустым. Необходимо заполнить.");
         }
         return clientService.createClient(client);
     }
 
     @PutMapping("/api/client/{id}")
-    public Client editPrice(@PathVariable("id") long id, @RequestBody Client client) throws ClientNotFoundException {
+    public Client editClient(@PathVariable("id") long id, @RequestBody Client client) throws ClientNotFoundException, ValidateException {
         if (client.getTitle().isEmpty()) {
-            throw new RuntimeException("Название прайса не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
         }
         return clientService.editClient(client, id);
     }

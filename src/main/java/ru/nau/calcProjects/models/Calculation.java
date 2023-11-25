@@ -1,91 +1,56 @@
 package ru.nau.calcProjects.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import ru.nau.calcProjects.dto.CalculationDto;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "calculations")
 public class Calculation {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User author;
 
-    @ManyToOne(targetEntity = Client.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
-    private Date creationdate;
-    private double liccost;
-    private double workcost;
-    private int hours;
-    private double resultCalculation;
 
-    public Calculation(Client client) {
-        this.client = client;
-        this.creationdate = new Date();
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "price_id", referencedColumnName = "id")
+    private Price price;
+
+    private Date creationDate;
+
+    private Double licCost;
+
+    private Double workCost;
+
+    private Integer hours;
+
+    private Double resultCalculation;
+
+    public Calculation() {
+        this.creationDate = new Date();
     }
 
-    private Long getId() {
-        return id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
+    public Calculation(User author, Client client, Price price, CalculationDto calculationDto, Double resultCalculation) {
         this.author = author;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
         this.client = client;
-    }
-
-    public Date getCreationdate() {
-        return creationdate;
-    }
-
-    public double getLiccost() {
-        return liccost;
-    }
-
-    public void setLiccost(double liccost) {
-        this.liccost = liccost;
-    }
-
-    public double getWorkcost() {
-        return workcost;
-    }
-
-    public void setWorkcost(double workcost) {
-        this.workcost = workcost;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
-    public double getResultCalculation() {
-        return resultCalculation;
-    }
-
-    public void setResultCalculation(double liccost, double workcost, int hours) {
-        //active calcPrice
-        Price activePrice = null;
-        this.resultCalculation = liccost * activePrice.getLicpercent()
-                + workcost * activePrice.getWorkpercent()
-                + hours * activePrice.getHourcost();
+        this.price = price;
+        this.creationDate = new Date();
+        this.licCost = calculationDto.getLicCost();
+        this.workCost = calculationDto.getWorkCost();
+        this.hours = calculationDto.getHours();
+        this.resultCalculation = resultCalculation;
     }
 }

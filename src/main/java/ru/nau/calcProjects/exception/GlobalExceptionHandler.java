@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+    @ExceptionHandler(ValidateException.class)
+    public ResponseEntity<String> handleRuntimeException(ValidateException ex) {
         String body = "{\"state\":\"fail\"," +
                 "\"message\":\"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);

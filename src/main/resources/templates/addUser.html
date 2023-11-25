@@ -53,15 +53,15 @@
 </div>
 <div class="row">
     <label for="user-password-input">Пароль:</label>
-    <input id="user-password-input" name="title" type="text"/>
+    <input id="user-password-input" name="title" type="password"/>
 </div>
 <div class="row">
     <label for="user-email-input">Email:</label>
-    <input id="user-email-input" name="title" type="text"/>
+    <input id="user-email-input" name="title" type="email"/>
 </div>
 <div class="row">
     <button type="button" onclick="saveUser()">Создать пользователя</button>
-    <a href="list.html" th:href="@{/user}"><button type="button">Назад</button></a>
+    <a href="main.html" th:href="@{/user}"><button type="button">Назад</button></a>
 </div>
 <h3>Сохранённый пользователь:</h3>
 <pre id = "saved-user"></pre>

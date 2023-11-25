@@ -3,6 +3,7 @@ package ru.nau.calcProjects.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nau.calcProjects.exception.PriceNotFoundException;
+import ru.nau.calcProjects.exception.ValidateException;
 import ru.nau.calcProjects.models.Price;
 import ru.nau.calcProjects.services.PriceService;
 
@@ -25,27 +26,27 @@ public class PriceRestController {
 
     @GetMapping ("/api/price/{id}")
     public Price getPrice(@PathVariable long id) throws PriceNotFoundException {
-        return priceService.getById(id);
+        return priceService.findById(id);
     }
 
     @PostMapping("/api/price")
-    public Price createPrice(@RequestBody Price price) {
+    public Price createPrice(@RequestBody Price price) throws ValidateException {
         if (price.getTitle().isEmpty()) {
-            throw new RuntimeException("Название прайса не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
         } else if (price.getLicpercent() == null) {
-            throw new RuntimeException("Процент от стоимости лицензий не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Процент от стоимости лицензий не может быть пустым. Необходимо заполнить.");
         } else if (price.getWorkpercent() == null) {
-            throw new RuntimeException("Процент от стоимости проектных работ не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Процент от стоимости проектных работ не может быть пустым. Необходимо заполнить.");
         } else if (price.getHourcost() == null) {
-            throw new RuntimeException("Ставка человеко-часа не может быть пустой. Необходимо заполнить.");
+            throw new ValidateException("Ставка человеко-часа не может быть пустой. Необходимо заполнить.");
         }
         return priceService.createPrice(price);
     }
 
     @PutMapping("/api/price/{id}")
-    public Price editPrice(@PathVariable("id") long id, @RequestBody Price price) throws PriceNotFoundException {
+    public Price editPrice(@PathVariable("id") long id, @RequestBody Price price) throws PriceNotFoundException, ValidateException {
         if (price.getTitle().isEmpty()) {
-            throw new RuntimeException("Название прайса не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
         }
         return priceService.editPrice(price, id);
     }
