@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
     <title>Регистрация нового пользователя</title>
     <style>
     body {
@@ -48,9 +49,15 @@
 <h1>Регистрация нового пользователя</h1>
 <br/>
 <form th:method="POST" th:action="@{/registration}" th:object="${user}">
-    <input type="text" name="username" placeholder="Имя пользователя" required><br>
-    <input type="password" name="password" placeholder="Пароль" required><br>
-    <input type="text" name="email" placeholder="email" required><br>
+    <input type="text" name="username" placeholder="Имя пользователя" required>
+    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
+    <br>
+    <input type="password" name="password" placeholder="Пароль" required>
+    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+    <br>
+    <input type="text" name="email" placeholder="email" required>
+    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+    <br>
     <div class="row">
         <input type="submit" value="Зарегистрироваться">
         <a type="text" href="main.html" th:href="@{/}">Отмена</a>
