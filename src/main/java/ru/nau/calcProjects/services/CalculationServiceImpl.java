@@ -26,8 +26,8 @@ public class CalculationServiceImpl implements CalculationService {
     private final CalculationRepository calculationRepository;
     private final PriceRepository priceRepository;
     private final UserRepository userRepository;
-
     private final ClientRepository clientRepository;
+
 
     @Autowired
     public CalculationServiceImpl(CalculationRepository calculationRepository, PriceRepository priceRepository, UserRepository userRepository, ClientRepository clientRepository) {
@@ -63,15 +63,18 @@ public class CalculationServiceImpl implements CalculationService {
         return calculationRepository.findAll(Sort.by(Sort.Order.desc("creationDate")));
     }
 
-//    @Override
-//    public List<Calculation> findAllByClientId() {
-//        return calculationRepository.findAllByClientId(Sort.by(Sort.Order.desc("creationDate")));
-//    }
-//
-//    @Override
-//    public List<Calculation> findAllByAuthorId() {
-//        return calculationRepository.findAllByAuthorId(Sort.by(Sort.Order.desc("creationDate")));
-//    }
+    @Override
+    public List<Calculation> findAllByClientId(Long clientId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long authorId = customUserDetails.getUser().getId();
+        if (clientId != null) {
+            return calculationRepository
+                    .findAllByAuthorIdAndClientId(authorId, clientId, Sort.by(Sort.Order.desc("creationDate")));
+        } else {
+            return calculationRepository.findAllByAuthorId(authorId, Sort.by(Sort.Order.desc("creationDate")));
+        }
+    }
 
     @Transactional(readOnly = true)
     @Override
