@@ -1,5 +1,7 @@
 insert into service_users(username, password, email, role)
-    values ('admin', 'admin', 'admin@email.ru', 'ADMIN');
+    values ('admin', '$2a$10$7OpFR2kzKhxvwe37Pi2KL.maJP8wfv8PO/.7sn56Cs8dvvkRwzFgW', 'admin@email.ru', 'ADMIN');
+insert into service_users(username, password, email, role)
+    values ('user', '$2a$10$2Pb36deyHJDMmdCRwzL9C.gbKo2s68SNER7JYttg5JgQ9VzjHQkOO', 'user@email.ru', 'USER');
 
 insert into prices (title, licpercent, workpercent, hourcost, status, creation_date)
     values ('Тестовый прайс', 50, 100, 500, 'true', '2023-11-23 21:28:12');
