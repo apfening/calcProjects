@@ -22,12 +22,12 @@ public class PageController {
         return "main";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/admin/user")
     public String user() {
         return "user";
     }
 
-    @GetMapping("/addUser")
+    @GetMapping("/admin/addUser")
     public String addUserPage() {
         return "addUser";
     }
@@ -47,12 +47,12 @@ public class PageController {
         return "login";
     }
 
-    @GetMapping("/price")
+    @GetMapping("/admin/price")
     public String pricePage() {
         return "price";
     }
 
-    @GetMapping("/addPrice")
+    @GetMapping("/admin/addPrice")
     public String addPricePage() {
         return "addPrice";
     }
@@ -75,5 +75,15 @@ public class PageController {
     @GetMapping("/addCalculation")
     public String addCalculationPage() {
         return "addCalculation";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin";
+    }
+
+    @GetMapping("/admin/adminCalculation")
+    public String adminCalculationPage() {
+        return "adminCalculation";
     }
 }

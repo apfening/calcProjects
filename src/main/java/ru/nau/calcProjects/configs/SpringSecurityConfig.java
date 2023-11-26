@@ -20,8 +20,8 @@ public class SpringSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/registration").permitAll()
-                        .requestMatchers("/add/**", "/delete/**", "/users").hasRole("ADMIN")
+                        .requestMatchers("/registration", "/login").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")

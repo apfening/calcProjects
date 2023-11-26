@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <title>List of all calculations</title>
+  <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .calculations {
+            border: 1px solid steelblue;
+            width: 1200px;
+            border-collapse: collapse;
+        }
+
+        .calculations tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .calculations td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+
+  <script>
+    // Fetch data from server
+    fetch('/api/admin/calculation')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector('tbody');
+            data.forEach(calculation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${calculation.id}</td>
+                    <td>${calculation.author}</td>
+                    <td>${calculation.client}</td>
+                    <td>${calculation.price}</td>
+                    <td>${calculation.creationDate}</td>
+                    <td>${calculation.licCost}</td>
+                    <td>${calculation.workCost}</td>
+                    <td>${calculation.hours}</td>
+                    <td>${calculation.resultCalculation}</td>
+                    <td><a href="#" onclick="deleteRow(${calculation.id})">Удалить</a></td>
+                    `
+                ;
+                tableBody.appendChild(row);
+            });
+        });
+    // Delete row function
+    function deleteRow(id) {
+        fetch(`/api/calculation/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    var table = document.querySelector('tbody');
+                    var rows = table.getElementsByTagName("tr");
+                    for (var i = 0; i < rows.length; i++) {
+                        var cells = rows[i].getElementsByTagName("td");
+                        if (cells[0].innerHTML == id) {
+                          var rowIndex = rows[i].rowIndex;
+                          break;
+                      }
+                    }
+                    console.log("Num is: " + rowIndex);
+                    table.deleteRow(rowIndex - 1);
+                } else {
+                    throw new Error('Failed to delete row');
+                }
+            })
+            .catch(error => console.error(error));
+    }
+
+    function filterItems() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("calculation-filter-input");
+        filter = input.value.toUpperCase();
+        table = document.querySelector('tbody');
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function clearFilterItems() {
+        var input, filter, table, tr, td, i, txtValue;
+        filter = "";
+        table = document.querySelector('tbody');
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    </script>
+</head>
+<body>
+<h1>Мои расчёты:</h1>
+<div class="row">
+  <label for="calculation-filter-input">Фильтр по клиентам:</label>
+  <input id="calculation-filter-input" name="filter" type="search"/>
+  <button type="button" onclick="filterItems()">Фильтр</button>
+  <button type="button" onclick="clearFilterItems()">Очистить фильтр</button>
+</div>
+<br/>
+<table class="calculations">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Автор</th>
+    <th>Клиент</th>
+    <th>Прайс</th>
+    <th>Дата создания</th>
+    <th>Стоимость лицензии</th>
+    <th>Стоимость проектных работ</th>
+    <th>Количество часов</th>
+    <th>Результат расчёта</th>
+    <th>Удалить</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br>
+<div class="row">
+  <a href="addCalculation.html" th:href = "@{/addCalculation}"><button type="button">Добавить новый расчёт</button></a>
+  <a href="admin.html" th:href="@{/admin}"><button type="button">Назад</button></a>
+</div>
+
+</body>
+</html>

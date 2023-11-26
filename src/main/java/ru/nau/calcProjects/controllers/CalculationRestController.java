@@ -32,7 +32,6 @@ public class CalculationRestController {
 
     @GetMapping("/api/calculation")
     public List<CalculationDto> findAllByClientId(@RequestParam(value = "client", required = false) Long clientId) {
-        System.out.println(clientId);
         return calculationService.findAllByClientId(clientId)
                 .stream()
                 .map(CalculationDto::new)
