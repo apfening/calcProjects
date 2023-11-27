@@ -41,7 +41,7 @@ public class ClientRestController {
     @PutMapping("/api/client/{id}")
     public Client editClient(@PathVariable("id") long id, @RequestBody Client client) throws ClientNotFoundException, ValidateException {
         if (client.getTitle().isEmpty()) {
-            throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название клиента не может быть пустым. Необходимо заполнить.");
         }
         return clientService.editClient(client, id);
     }

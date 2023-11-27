@@ -50,6 +50,7 @@ public class ClientServiceImpl implements ClientService {
     public Client editClient(Client client, Long id) throws ClientNotFoundException {
         Client editClient = findById(id);
         editClient.setTitle(client.getTitle());
+        editClient.setComment(client.getComment());
         return clientRepository.save(editClient);
     }
 
