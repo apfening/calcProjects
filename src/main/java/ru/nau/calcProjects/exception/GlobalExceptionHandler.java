@@ -1,5 +1,6 @@
 package ru.nau.calcProjects.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,10 +32,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<String> handleRuntimeException(SQLException ex) {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleRuntimeException(DataIntegrityViolationException ex) {
         String body = "{\"state\":\"fail\"," +
-                "\"message\":\"" + ex.getMessage() + "\"}";
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+                "\"message\":\"Удалите невозможно, сначала необходимо удалить связаные с объектом сущности\"}";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }
