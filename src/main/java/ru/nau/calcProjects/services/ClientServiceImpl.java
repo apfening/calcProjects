@@ -25,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public Client createClient(Client client) throws ClientExistException {
-        Optional<Client> existClient = clientRepository.getByTitle(client.getTitle());
+        Optional<Client> existClient = clientRepository.findByTitle(client.getTitle());
         if (existClient.isPresent()) {
             throw new ClientExistException("Клиент с таким названием уже существует");
         }
@@ -34,8 +34,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Client> findAll() {
-        return clientRepository.findAll(Sort.by(Sort.Order.desc("creationDate")));
+    public List<Client> findAll(String title) {
+        if (title != null) {
+            return clientRepository.findByTitleContaining(title, Sort.by(Sort.Order.desc("creationDate")));
+        } else {
+            return clientRepository.findAll(Sort.by(Sort.Order.desc("creationDate")));
+        }
     }
 
     @Transactional(readOnly = true)
@@ -57,5 +61,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteById(Long id) {
         clientRepository.deleteById(id);
+    }
+
+    @Override
+    public Client findByTitle(String title) throws ClientNotFoundException {
+        return clientRepository.findFirstByTitleContaining(title)
+                .orElseThrow(() -> new ClientNotFoundException("Клиент с названием " + title + " не найден"));
     }
 }

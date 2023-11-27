@@ -70,45 +70,69 @@
             })
             .catch(error => console.error(error));
     }
-
     function filterItems() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("calculation-filter-input");
-        filter = input.value.toUpperCase();
-        table = document.querySelector('tbody');
-        tr = table.getElementsByTagName("tr");
+        document.querySelector('tbody').innerHTML = "";
+        const client = document.getElementById("calculation-filter-input").value;
 
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[2];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                  tr[i].style.display = "";
-                } else {
-                  tr[i].style.display = "none";
-                }
-            }
-        }
+        fetch(`/api/client?title=${client}`, { method: 'GET' })
+              .then(response => response.json())
+              .then(data => {
+                  data.forEach(data => {
+                      if (data.id) {
+                        var id = data.id
+                        fetch(`/api/calculation?client=${id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const tableBody = document.querySelector('tbody');
+                            data.forEach(calculation => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${calculation.id}</td>
+                                    <td>${calculation.author}</td>
+                                    <td>${calculation.client}</td>
+                                    <td>${calculation.price}</td>
+                                    <td>${calculation.creationDate}</td>
+                                    <td>${calculation.licCost}</td>
+                                    <td>${calculation.workCost}</td>
+                                    <td>${calculation.hours}</td>
+                                    <td>${calculation.resultCalculation}</td>
+                                    <td><a href="#" onclick="deleteRow(${calculation.id})">Удалить</a></td>
+                                    `
+                                ;
+                                tableBody.appendChild(row);
+                            });
+                        });
+                      }
+                    });
+            })
+            .catch(error => console.error(error));
     }
+
     function clearFilterItems() {
-        var input, filter, table, tr, td, i, txtValue;
-        filter = "";
-        table = document.querySelector('tbody');
-        tr = table.getElementsByTagName("tr");
-
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[2];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                  tr[i].style.display = "";
-                } else {
-                  tr[i].style.display = "none";
-                }
-            }
-        }
+        document.querySelector('tbody').innerHTML = "";
+        fetch('/api/calculation')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector('tbody');
+            data.forEach(calculation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${calculation.id}</td>
+                    <td>${calculation.author}</td>
+                    <td>${calculation.client}</td>
+                    <td>${calculation.price}</td>
+                    <td>${calculation.creationDate}</td>
+                    <td>${calculation.licCost}</td>
+                    <td>${calculation.workCost}</td>
+                    <td>${calculation.hours}</td>
+                    <td>${calculation.resultCalculation}</td>
+                    <td><a href="#" onclick="deleteRow(${calculation.id})">Удалить</a></td>
+                    `
+                ;
+                tableBody.appendChild(row);
+            });
+        });
     }
-
     </script>
 </head>
 <body>
@@ -117,7 +141,7 @@
   <label for="calculation-filter-input">Фильтр по клиентам:</label>
   <input id="calculation-filter-input" name="filter" type="search"/>
   <button type="button" onclick="filterItems()">Фильтр</button>
-  <button type="button" onclick="clearFilterItems()">Очистить фильтр</button>
+  <button type="button" onclick="clearFilterItems()">Сбросить фильтр</button>
 </div>
 <br/>
 <table class="calculations">

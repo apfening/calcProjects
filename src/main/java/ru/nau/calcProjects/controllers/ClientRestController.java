@@ -21,8 +21,13 @@ public class ClientRestController {
     }
 
     @GetMapping("/api/client")
-    public List<Client> getAllClients() {
-        return clientService.findAll();
+    public List<Client> getAllClients(@RequestParam(value = "title", required = false) String title) {
+        return clientService.findAll(title);
+    }
+
+    @GetMapping("/api/client/findByTitle")
+    public Client getClientByTitle(@RequestParam(value = "title") String title) throws ClientNotFoundException {
+        return clientService.findByTitle(title);
     }
 
     @GetMapping ("/api/client/{id}")

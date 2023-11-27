@@ -14,7 +14,7 @@ insert into clients (title, comment, creation_date)
 insert into calculations
         (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
     values
-        (1, 1, 1,'2023-11-23 21:28:12', 10, 20, 10, 5025);
+        (1, 1, 1,'2023-11-22 21:28:12', 10, 20, 10, 5025);
 insert into calculations
         (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
     values
@@ -22,4 +22,4 @@ insert into calculations
 insert into calculations
         (user_id, client_id, price_id, creation_date, lic_cost, work_cost, hours, result_calculation)
     values
-        (1, 1, 1,'2023-11-23 21:28:12', 10, 20, 15, 7535);
+        (1, 1, 1,'2023-11-24 21:28:12', 10, 20, 15, 7535);

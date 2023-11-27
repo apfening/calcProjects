@@ -36,6 +36,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleRuntimeException(DataIntegrityViolationException ex) {
         String body = "{\"state\":\"fail\"," +
                 "\"message\":\"Удалите невозможно, сначала необходимо удалить связаные с объектом сущности\"}";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<String> handleClientNotFoundException(ClientNotFoundException ex) {
+        String body = "{\"state\":\"fail\"," +
+                "\"message\":\"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }

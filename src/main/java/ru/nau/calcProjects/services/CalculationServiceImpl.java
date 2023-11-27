@@ -46,7 +46,7 @@ public class CalculationServiceImpl implements CalculationService {
         String username = customUserDetails.getUser().getUsername();
 
         User user = userRepository.findByUsername(username).get();
-        Client client = clientRepository.getByTitle(calculationDto.getClient()).get();
+        Client client = clientRepository.findByTitle(calculationDto.getClient()).get();
         Price actualPrice = priceRepository.findByStatus(true);
         Double result = (calculationDto.getLicCost() * actualPrice.getLicpercent() / 100)
                 + (calculationDto.getWorkCost() * actualPrice.getWorkpercent() / 100)
@@ -60,7 +60,7 @@ public class CalculationServiceImpl implements CalculationService {
     @Transactional(readOnly = true)
     @Override
     public List<Calculation> findAll() {
-        return calculationRepository.findAll(Sort.by(Sort.Order.desc("creationDate")));
+        return calculationRepository.findTop100ByOrderByCreationDateDesc();
     }
 
     @Override
@@ -70,9 +70,9 @@ public class CalculationServiceImpl implements CalculationService {
         Long authorId = customUserDetails.getUser().getId();
         if (clientId != null) {
             return calculationRepository
-                    .findAllByAuthorIdAndClientId(authorId, clientId, Sort.by(Sort.Order.desc("creationDate")));
+                    .findTop100ByAuthorIdAndClientId(authorId, clientId, Sort.by(Sort.Order.desc("creationDate")));
         } else {
-            return calculationRepository.findAllByAuthorId(authorId, Sort.by(Sort.Order.desc("creationDate")));
+            return calculationRepository.findTop100ByAuthorId(authorId, Sort.by(Sort.Order.desc("creationDate")));
         }
     }
 
