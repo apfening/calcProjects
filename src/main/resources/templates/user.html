@@ -37,7 +37,7 @@
                     <td>${user.username}</td>
                     <td>${user.email}</td>
                     <td>${user.role}</td>
-                    <td><a href="/user/${user.id}">Изменить</a></td>
+                    <td><a href="/admin/user/${user.id}">Изменить</a></td>
                     <td><a href="#" onclick="deleteRow(${user.id})">Удалить</a></td>
                     `
                 ;
@@ -87,8 +87,8 @@
 </table>
 <br>
 <div class="row">
-    <a href="addPrice.html" th:href = "@{/addUser}"><button type="button">Добавить нового пользователя</button></a>
-    <a href="main.html" th:href="@{/}"><button type="button">На главную</button></a>
+    <a href="addPrice.html" th:href = "@{/admin/addUser}"><button type="button">Добавить нового пользователя</button></a>
+    <a href="admin.html" th:href="@{/admin}"><button type="button">Назад</button></a>
 </div>
 
 </body>

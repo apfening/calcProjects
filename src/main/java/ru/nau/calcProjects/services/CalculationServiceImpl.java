@@ -26,8 +26,8 @@ public class CalculationServiceImpl implements CalculationService {
     private final CalculationRepository calculationRepository;
     private final PriceRepository priceRepository;
     private final UserRepository userRepository;
-
     private final ClientRepository clientRepository;
+
 
     @Autowired
     public CalculationServiceImpl(CalculationRepository calculationRepository, PriceRepository priceRepository, UserRepository userRepository, ClientRepository clientRepository) {
@@ -46,11 +46,11 @@ public class CalculationServiceImpl implements CalculationService {
         String username = customUserDetails.getUser().getUsername();
 
         User user = userRepository.findByUsername(username).get();
-        Client client = clientRepository.getByTitle(calculationDto.getClient()).get();
+        Client client = clientRepository.findByTitle(calculationDto.getClient()).get();
         Price actualPrice = priceRepository.findByStatus(true);
-        Double result = (calculationDto.getLicCost() * actualPrice.getLicpercent() / 100)
-                + (calculationDto.getWorkCost() * actualPrice.getWorkpercent() / 100)
-                + calculationDto.getHours() * actualPrice.getHourcost();
+        Double result = (calculationDto.getLicCost() * actualPrice.getLicPercent() / 100)
+                + (calculationDto.getWorkCost() * actualPrice.getWorkPercent() / 100)
+                + calculationDto.getHours() * actualPrice.getHourCost();
         calculationDto.setResultCalculation(result);
 
         Calculation calculation = new Calculation(user, client, actualPrice, calculationDto, result);
@@ -59,19 +59,27 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Calculation> findAll() {
-        return calculationRepository.findAll(Sort.by(Sort.Order.desc("creationDate")));
+    public List<Calculation> findAllByClientId(Long clientId) {
+        if (clientId != null) {
+            return calculationRepository
+                .findTop100ByClientId(clientId, Sort.by(Sort.Order.desc("creationDate")));
+        } else {
+            return calculationRepository.findTop100ByOrderByCreationDateDesc();
+        }
     }
 
-//    @Override
-//    public List<Calculation> findAllByClientId() {
-//        return calculationRepository.findAllByClientId(Sort.by(Sort.Order.desc("creationDate")));
-//    }
-//
-//    @Override
-//    public List<Calculation> findAllByAuthorId() {
-//        return calculationRepository.findAllByAuthorId(Sort.by(Sort.Order.desc("creationDate")));
-//    }
+    @Override
+    public List<Calculation> findAllUserCalculationByClientId(Long clientId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long authorId = customUserDetails.getUser().getId();
+        if (clientId != null) {
+            return calculationRepository
+                .findTop100ByAuthorIdAndClientId(authorId, clientId, Sort.by(Sort.Order.desc("creationDate")));
+        } else {
+            return calculationRepository.findTop100ByAuthorId(authorId, Sort.by(Sort.Order.desc("creationDate")));
+        }
+    }
 
     @Transactional(readOnly = true)
     @Override

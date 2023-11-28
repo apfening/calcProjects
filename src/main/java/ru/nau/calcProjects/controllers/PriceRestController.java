@@ -33,11 +33,11 @@ public class PriceRestController {
     public Price createPrice(@RequestBody Price price) throws ValidateException {
         if (price.getTitle().isEmpty()) {
             throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
-        } else if (price.getLicpercent() == null) {
+        } else if (price.getLicPercent() == null) {
             throw new ValidateException("Процент от стоимости лицензий не может быть пустым. Необходимо заполнить.");
-        } else if (price.getWorkpercent() == null) {
+        } else if (price.getWorkPercent() == null) {
             throw new ValidateException("Процент от стоимости проектных работ не может быть пустым. Необходимо заполнить.");
-        } else if (price.getHourcost() == null) {
+        } else if (price.getHourCost() == null) {
             throw new ValidateException("Ставка человеко-часа не может быть пустой. Необходимо заполнить.");
         }
         return priceService.createPrice(price);

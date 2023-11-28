@@ -26,7 +26,6 @@ public class User {
     @Size(min = 3, message = "Имя пользователя должно содержать минимум 3 символа")
     private String username;
 
-//    @JsonIgnore
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;
 

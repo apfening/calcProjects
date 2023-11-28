@@ -1,9 +1,14 @@
 package ru.nau.calcProjects.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.nio.file.AccessDeniedException;
+import java.sql.SQLException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,5 +32,19 @@ public class GlobalExceptionHandler {
         String body = "{\"state\":\"fail\"," +
                 "\"message\":\"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleRuntimeException(DataIntegrityViolationException ex) {
+        String body = "{\"state\":\"fail\"," +
+                "\"message\":\"Удалите невозможно, сначала необходимо удалить связаные с объектом сущности\"}";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<String> handleClientNotFoundException(ClientNotFoundException ex) {
+        String body = "{\"state\":\"fail\"," +
+                "\"message\":\"" + ex.getMessage() + "\"}";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }

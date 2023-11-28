@@ -9,11 +9,9 @@ import java.util.List;
 public interface CalculationService {
     Calculation createCalculation(CalculationDto calculation);
 
-    List<Calculation> findAll();
+    List<Calculation> findAllByClientId(Long clientId);
 
-//    List<Calculation> findAllByClientId();
-//
-//    List<Calculation> findAllByAuthorId();
+    List<Calculation> findAllUserCalculationByClientId(Long clientId);
 
     Calculation findById(Long id) throws CalculationNotFoundException;
 

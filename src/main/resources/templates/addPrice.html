@@ -25,14 +25,14 @@
         function savePrice() {
             const savedPriceContainer = document.getElementById("saved-price")
             const titleInput = document.getElementById("price-title-input")
-            const licpercentInput = document.getElementById("price-licpercent-input")
-            const workpercentInput = document.getElementById("price-workpercent-input")
-            const hourcostInput = document.getElementById("price-hourcost-input")
+            const licPercentInput = document.getElementById("price-licPercent-input")
+            const workPercentInput = document.getElementById("price-workPercent-input")
+            const hourCostInput = document.getElementById("price-hourCost-input")
             let  price = {
                 title: titleInput.value,
-                licpercent: licpercentInput.value,
-                workpercent: workpercentInput.value,
-                hourcost: hourcostInput.value
+                licPercent: licPercentInput.value,
+                workPercent: workPercentInput.value,
+                hourCost: hourCostInput.value
             }
             fetch("/api/price", {
                 method: 'POST',
@@ -54,21 +54,21 @@
     <input id="price-title-input" name="title" type="text"/>
 </div>
 <div class="row">
-    <label for="price-licpercent-input">Процент от стоимости лицензий (%):</label>
-    <input id="price-licpercent-input" name="licpercent" type="number" min="0"/>
+    <label for="price-licPercent-input">Процент от стоимости лицензий (%):</label>
+    <input id="price-licPercent-input" name="licPercent" type="number" min="0"/>
 </div>
 <div class="row">
-    <label for="price-workpercent-input">Процент от стоимости проектных работ (%):</label>
-    <input id="price-workpercent-input" name="workpercent" type="number" min="0"/>
+    <label for="price-workPercent-input">Процент от стоимости проектных работ (%):</label>
+    <input id="price-workPercent-input" name="workPercent" type="number" min="0"/>
 </div>
 <div class="row">
-    <label for="price-hourcost-input">Ставка человеко-часа (руб.):</label>
-    <input id="price-hourcost-input" name="workpercent" type="number" min="0"/>
+    <label for="price-hourCost-input">Ставка человеко-часа (руб.):</label>
+    <input id="price-hourCost-input" name="workPercent" type="number" min="0"/>
 </div>
 
 <div class="row">
     <button type="button" onclick="savePrice()">Создать прайс</button>
-    <a href="main.html" th:href="@{/price}"><button type="button">Назад</button></a>
+    <a href="price.html" th:href="@{/admin/price}"><button type="button">Назад</button></a>
 </div>
 <h3>Сохранённый прайс:</h3>
 <pre id = "saved-price"></pre>

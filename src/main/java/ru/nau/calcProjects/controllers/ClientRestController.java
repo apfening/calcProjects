@@ -21,8 +21,13 @@ public class ClientRestController {
     }
 
     @GetMapping("/api/client")
-    public List<Client> getAllClients() {
-        return clientService.findAll();
+    public List<Client> getAllClients(@RequestParam(value = "title", required = false) String title) {
+        return clientService.findAll(title);
+    }
+
+    @GetMapping("/api/client/findByTitle")
+    public Client getClientByTitle(@RequestParam(value = "title") String title) throws ClientNotFoundException {
+        return clientService.findByTitle(title);
     }
 
     @GetMapping ("/api/client/{id}")
@@ -41,7 +46,7 @@ public class ClientRestController {
     @PutMapping("/api/client/{id}")
     public Client editClient(@PathVariable("id") long id, @RequestBody Client client) throws ClientNotFoundException, ValidateException {
         if (client.getTitle().isEmpty()) {
-            throw new ValidateException("Название прайса не может быть пустым. Необходимо заполнить.");
+            throw new ValidateException("Название клиента не может быть пустым. Необходимо заполнить.");
         }
         return clientService.editClient(client, id);
     }
