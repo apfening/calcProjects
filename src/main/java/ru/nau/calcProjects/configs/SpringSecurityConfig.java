@@ -16,15 +16,18 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authz) -> authz
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/registration", "/login").permitAll()
                         .requestMatchers("/admin/**", "/api/price/**", "/api/user/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
-                        .permitAll());
-//                .formLogin(withDefaults());
+                        .permitAll())
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/forbidden")
+                )
+        ;
         return http.build();
     }
 

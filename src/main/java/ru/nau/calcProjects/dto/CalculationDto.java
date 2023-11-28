@@ -1,14 +1,10 @@
 package ru.nau.calcProjects.dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.nau.calcProjects.models.Calculation;
-import ru.nau.calcProjects.models.Client;
-import ru.nau.calcProjects.models.Price;
-import ru.nau.calcProjects.models.User;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @Data
@@ -17,7 +13,7 @@ public class CalculationDto {
     private String author;
     private String client;
     private String price;
-    private Date creationDate;
+    private ZonedDateTime creationDate;
     private Double licCost;
     private Double workCost;
     private Integer hours;

@@ -9,7 +9,6 @@ import ru.nau.calcProjects.models.Price;
 import ru.nau.calcProjects.repositories.PriceRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -70,8 +69,8 @@ public class PriceServiceImpl implements PriceService {
     public Price editPrice(Price price, Long id) throws PriceNotFoundException {
         Price editPrice = findById(id);
         editPrice.setTitle(price.getTitle());
-        editPrice.setLicpercent(price.getLicpercent());
-        editPrice.setWorkpercent(price.getWorkpercent());
+        editPrice.setLicPercent(price.getLicPercent());
+        editPrice.setWorkPercent(price.getWorkPercent());
         editPrice.setStatus(price.isStatus());
 
         if (editPrice.isStatus()) {

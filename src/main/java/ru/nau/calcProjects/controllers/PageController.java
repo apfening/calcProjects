@@ -100,4 +100,9 @@ public class PageController {
     public String adminCalculationPage() {
         return "adminCalculation";
     }
+
+    @GetMapping("/forbidden")
+    public String forbiddenPage() {
+        return "forbidden";
+    }
 }
