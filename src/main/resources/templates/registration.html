@@ -51,9 +51,15 @@
 <body>
 <form th:method="POST" th:action="@{/registration}" th:object="${user}">
     <h2>Регистрация нового пользователя</h2>
-    <input type="text" name="username" placeholder="Имя пользователя" required><br>
-    <input type="password" name="password" placeholder="Пароль" required><br>
-    <input type="text" name="email" placeholder="email" required><br>
+    <input type="text" name="username" placeholder="Имя пользователя" required>
+    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
+    <br>
+    <input type="password" name="password" placeholder="Пароль" required>
+    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+    <br>
+    <input type="text" name="email" placeholder="email" required>
+    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+    <br>
     <div class="row">
         <input type="submit" value="Зарегистрироваться">
         <a type="text" href="main.html" th:href="@{/}">Отмена</a>

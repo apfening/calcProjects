@@ -1,7 +1,11 @@
 package ru.nau.calcProjects.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,13 +45,16 @@ public class PageController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage() {
+    public String registrationPage(@ModelAttribute("user") User user) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registrationPage(User user) throws Exception {
-        userServiceImpl.addUser(user);
+    public String registrationPage(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()){
+            return  "registration";
+        }
+        userService.addUser(user);
         return "redirect:/login";
     }
     @GetMapping("/login")
