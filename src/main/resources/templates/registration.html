@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -52,13 +52,13 @@
 <form th:method="POST" th:action="@{/registration}" th:object="${user}">
     <h2>Регистрация нового пользователя</h2>
     <input type="text" name="username" placeholder="Имя пользователя" required>
-    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
+    <div style="color:red; font-size:13px" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
     <br>
     <input type="password" name="password" placeholder="Пароль" required>
-    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+    <div  style="color:red; font-size:13px" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br>
     <input type="text" name="email" placeholder="email" required>
-    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+    <div  style="color:red; font-size:13px" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
     <br>
     <div class="row">
         <input type="submit" value="Зарегистрироваться">

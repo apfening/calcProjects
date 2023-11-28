@@ -1,16 +1,11 @@
 package ru.nau.calcProjects.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -22,8 +17,8 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Имя пользователя не может быть пустым")
-    @Size(min = 3, message = "Имя пользователя должно содержать минимум 3 символа")
+    @NotBlank(message = "Имя не может быть пустым")
+    @Size(min = 3, message = "Имя должно содержать минимум 3 символа")
     private String username;
 
     @NotBlank(message = "Пароль не может быть пустым")
