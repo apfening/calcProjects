@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nau.calcProjects.dto.CalculationDto;
 import ru.nau.calcProjects.exception.CalculationNotFoundException;
-import ru.nau.calcProjects.exception.PriceNotFoundException;
 import ru.nau.calcProjects.exception.ValidateException;
 import ru.nau.calcProjects.models.Calculation;
 import ru.nau.calcProjects.services.CalculationService;
@@ -23,16 +22,16 @@ public class CalculationRestController {
     }
 
     @GetMapping("/api/admin/calculation")
-    public List<CalculationDto> getAllCalculations() {
-        return calculationService.findAll()
+    public List<CalculationDto> findAllByClientId(@RequestParam(value = "client", required = false) Long clientId) {
+        return calculationService.findAllByClientId(clientId)
                 .stream()
                 .map(CalculationDto::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/api/calculation")
-    public List<CalculationDto> findAllByClientId(@RequestParam(value = "client", required = false) Long clientId) {
-        return calculationService.findAllByClientId(clientId)
+    public List<CalculationDto> findAllUserCalculationByClientId(@RequestParam(value = "client", required = false) Long clientId) {
+        return calculationService.findAllUserCalculationByClientId(clientId)
                 .stream()
                 .map(CalculationDto::new)
                 .collect(Collectors.toList());

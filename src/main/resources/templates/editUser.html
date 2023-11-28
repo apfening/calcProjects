@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Add user</title>
+    <title>Edit user</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -22,18 +22,20 @@
         }
     </style>
     <script>
+        const path = window.location.pathname;
+        const pathArray = path.split('/');
+        const id = pathArray[pathArray.length - 1];
+        console.log(`id: ${id}`);
         function saveUser() {
             const savedUserContainer = document.getElementById("saved-user")
-            const usernameInput = document.getElementById("user-username-input")
             const passwordInput = document.getElementById("user-password-input")
             const emailInput = document.getElementById("user-email-input")
             let  user = {
-                username: usernameInput.value,
                 password: passwordInput.value,
                 email: emailInput.value,
             }
-            fetch("/api/user", {
-                method: 'POST',
+            fetch(`/api/user/${id}`, {
+                method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
@@ -46,17 +48,13 @@
 </head>
 <body>
 
-<h3>Создать нового пользователя:</h3>
+<h3>Изменить:</h3>
 <div class="row">
-    <label for="user-username-input">Логин:</label>
-    <input id="user-username-input" name="username" type="text"/>
-</div>
-<div class="row">
-    <label for="user-password-input">Пароль:</label>
+    <label for="user-password-input">Введите новый пароль:</label>
     <input id="user-password-input" name="title" type="password"/>
 </div>
 <div class="row">
-    <label for="user-email-input">Email:</label>
+    <label for="user-email-input">Введите новый email:</label>
     <input id="user-email-input" name="title" type="email"/>
 </div>
 <div class="row">

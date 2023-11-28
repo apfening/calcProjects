@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nau.calcProjects.dto.CalculationDto;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,7 +32,7 @@ public class Calculation {
     @JoinColumn(name = "price_id", referencedColumnName = "id")
     private Price price;
 
-    private Date creationDate;
+    private ZonedDateTime creationDate;
 
     private Double licCost;
 
@@ -40,14 +43,14 @@ public class Calculation {
     private Double resultCalculation;
 
     public Calculation() {
-        this.creationDate = new Date();
+        this.creationDate = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Moscow"));
     }
 
     public Calculation(User author, Client client, Price price, CalculationDto calculationDto, Double resultCalculation) {
         this.author = author;
         this.client = client;
         this.price = price;
-        this.creationDate = new Date();
+        this.creationDate = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Moscow"));
         this.licCost = calculationDto.getLicCost();
         this.workCost = calculationDto.getWorkCost();
         this.hours = calculationDto.getHours();

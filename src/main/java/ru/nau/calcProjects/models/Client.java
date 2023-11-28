@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 @Entity
 @Getter
 @Setter
@@ -20,14 +21,14 @@ public class Client {
 
     private String comment;
 
-    private Date creationDate;
+    private ZonedDateTime creationDate;
 
     public Client() {
-        this.creationDate = new Date();
+        this.creationDate = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Moscow"));
     }
 
     public Client(String title){
         this.title = title;
-        this.creationDate = new Date();
+        this.creationDate = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Europe/Moscow"));
     }
 }
