@@ -1,15 +1,19 @@
 package ru.nau.calcProjects.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.nau.calcProjects.dto.ClientDto;
 import ru.nau.calcProjects.exception.ClientExistException;
 import ru.nau.calcProjects.exception.ClientNotFoundException;
-import ru.nau.calcProjects.exception.ValidateException;
-import ru.nau.calcProjects.models.Client;
 import ru.nau.calcProjects.services.ClientService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Validated
 @RestController
 public class ClientRestController {
 
@@ -21,38 +25,42 @@ public class ClientRestController {
     }
 
     @GetMapping("/api/client")
-    public List<Client> getAllClients(@RequestParam(value = "title", required = false) String title) {
-        return clientService.findAll(title);
+    public List<ClientDto> getAllClientsByUser(@RequestParam(value = "title", required = false) String title) {
+        return clientService.findAllClientsByUser(title)
+                .stream()
+                .map(ClientDto::new)
+                .collect(Collectors.toList());
     }
-
-    @GetMapping("/api/client/findByTitle")
-    public Client getClientByTitle(@RequestParam(value = "title") String title) throws ClientNotFoundException {
-        return clientService.findByTitle(title);
+    @GetMapping("/api/admin/client")
+    public List<ClientDto> getAllClients(@RequestParam(value = "title", required = false) String title) {
+        return clientService.findAll(title)
+                .stream()
+                .map(ClientDto::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping ("/api/client/{id}")
-    public Client getClient(@PathVariable long id) throws ClientNotFoundException {
-        return clientService.findById(id);
+    public ClientDto getClient(@PathVariable @Positive long id) throws ClientNotFoundException {
+        return new ClientDto(clientService.findById(id));
     }
 
     @PostMapping("/api/client")
-    public Client createClient(@RequestBody Client client) throws ClientExistException, ValidateException {
-        if (client.getTitle().isEmpty()) {
-            throw new ValidateException("Название клиента не может быть пустым. Необходимо заполнить.");
-        }
-        return clientService.createClient(client);
+    public ClientDto createClient(@Valid @RequestBody ClientDto client) throws ClientExistException {
+        return new ClientDto(clientService.createClient(client));
     }
 
     @PutMapping("/api/client/{id}")
-    public Client editClient(@PathVariable("id") long id, @RequestBody Client client) throws ClientNotFoundException, ValidateException {
-        if (client.getTitle().isEmpty()) {
-            throw new ValidateException("Название клиента не может быть пустым. Необходимо заполнить.");
-        }
-        return clientService.editClient(client, id);
+    public ClientDto editClient(@PathVariable("id") long id, @Valid @RequestBody ClientDto client) throws ClientNotFoundException {
+        return new ClientDto(clientService.editClient(client, id));
+    }
+
+    @PutMapping("/api/admin/client/{id}")
+    public ClientDto editAdminClient(@PathVariable("id") long id, @Valid @RequestBody ClientDto client) throws ClientNotFoundException {
+        return new ClientDto(clientService.editAllFieldToClient(client, id));
     }
 
     @DeleteMapping("/api/client/{id}")
-    public String deleteBook(@PathVariable("id") long id) {
+    public String deleteBook(@PathVariable("id") @Positive long id) {
         clientService.deleteById(id);
         return "{\"state\":\"success\"}";
     }

@@ -17,8 +17,7 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Имя не может быть пустым")
-    @Size(min = 3, message = "Имя должно содержать минимум 3 символа")
+    @Size(min = 3, max = 25, message = "Имя должно содержать от 3 до 25 символов")
     private String username;
 
     @NotBlank(message = "Пароль не может быть пустым")

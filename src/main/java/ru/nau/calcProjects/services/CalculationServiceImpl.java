@@ -19,6 +19,7 @@ import ru.nau.calcProjects.repositories.UserRepository;
 import ru.nau.calcProjects.security.CustomUserDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CalculationServiceImpl implements CalculationService {
@@ -40,11 +41,7 @@ public class CalculationServiceImpl implements CalculationService {
     @Transactional
     @Override
     public Calculation createCalculation(CalculationDto calculationDto) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        String username = customUserDetails.getUser().getUsername();
-
+        String username = getUser().getUsername();
         User user = userRepository.findByUsername(username).get();
         Client client = clientRepository.findByTitle(calculationDto.getClient()).get();
         Price actualPrice = priceRepository.findByStatus(true);
@@ -70,15 +67,35 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Override
     public List<Calculation> findAllUserCalculationByClientId(Long clientId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long authorId = customUserDetails.getUser().getId();
+        Long userId = getUser().getId();
         if (clientId != null) {
             return calculationRepository
-                .findTop100ByAuthorIdAndClientId(authorId, clientId, Sort.by(Sort.Order.desc("creationDate")));
+                .findTop100ByAuthorIdAndClientId(userId, clientId, Sort.by(Sort.Order.desc("creationDate")));
         } else {
-            return calculationRepository.findTop100ByAuthorId(authorId, Sort.by(Sort.Order.desc("creationDate")));
+            return calculationRepository.findTop100ByAuthorId(userId, Sort.by(Sort.Order.desc("creationDate")));
         }
+    }
+
+    @Override
+    public List<Calculation> findAllUserCalculationByUsernameAndClientId(String username, Long clientId) {
+        if (username.isEmpty() && clientId == null) {
+            return calculationRepository.findTop100ByOrderByCreationDateDesc();
+        }
+        if (username.isEmpty()) {
+            return calculationRepository
+                    .findTop100ByClientId(clientId, Sort.by(Sort.Order.desc("creationDate")));
+        }
+
+        Optional<User> user = userRepository.findFirstByUsernameContaining(username);
+        if (user.isEmpty()) {
+            return List.of();
+        }
+        Long userId = user.get().getId();
+        if (clientId == null) {
+            return calculationRepository.findTop100ByAuthorId(userId, Sort.by(Sort.Order.desc("creationDate")));
+        }
+        return calculationRepository
+                .findTop100ByAuthorIdAndClientId(userId, clientId, Sort.by(Sort.Order.desc("creationDate")));
     }
 
     @Transactional(readOnly = true)
@@ -92,5 +109,11 @@ public class CalculationServiceImpl implements CalculationService {
     @Override
     public void deleteById(Long id) throws CalculationNotFoundException {
         calculationRepository.deleteById(id);
+    }
+
+    private User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        return customUserDetails.getUser();
     }
 }

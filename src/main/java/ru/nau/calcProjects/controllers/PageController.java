@@ -9,17 +9,22 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.nau.calcProjects.exception.UserExistException;
 import ru.nau.calcProjects.models.User;
 import ru.nau.calcProjects.services.UserServiceImpl;
+import ru.nau.calcProjects.util.UserValidator;
 
 @Controller
 public class PageController {
 
     private final UserServiceImpl userServiceImpl;
 
+    private final UserValidator userValidator;
+
     @Autowired
-    public PageController(UserServiceImpl userServiceImpl) {
+    public PageController(UserServiceImpl userServiceImpl, UserValidator userValidator) {
         this.userServiceImpl = userServiceImpl;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/")
@@ -33,7 +38,7 @@ public class PageController {
     }
 
     @GetMapping("/admin/addUser")
-    public String addUserPage() {
+    public String addUserPage(@ModelAttribute("user") User user) {
         return "addUser";
     }
 
@@ -49,9 +54,11 @@ public class PageController {
     }
 
     @PostMapping("/registration")
-    public String registrationPage(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) throws Exception {
+    public String registrationPage(@ModelAttribute("user") @Valid User user,
+                                   BindingResult bindingResult) throws UserExistException {
+        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()){
-            return  "registration";
+            return "registration";
         }
         userServiceImpl.addUser(user);
         return "redirect:/login";
@@ -76,10 +83,21 @@ public class PageController {
         return "client";
     }
 
+    @GetMapping("/admin/client")
+    public String adminClientPage() {
+        return "adminClient";
+    }
+
     @GetMapping ("/client/{id}")
     public String editPage(Model model, @PathVariable("id") long clientId) {
         model.addAttribute("id", clientId);
         return "editClient";
+    }
+
+    @GetMapping ("/admin/client/{id}")
+    public String editAdminClientPage(Model model, @PathVariable("id") long clientId) {
+        model.addAttribute("id", clientId);
+        return "adminEditClient";
     }
 
     @GetMapping("/addClient")
